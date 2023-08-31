@@ -1,11 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
-<<<<<<< HEAD
 const port = 3000;
-=======
-const port = 80;
->>>>>>> 2f14a70d99adb8afa93e132bb3da8594536cc15e
 
 app.use(express.static('public'));
 app.use(express.json());
