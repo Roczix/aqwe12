@@ -17,7 +17,7 @@
   <script>
     const textArea = document.getElementById('textArea');
     const saveButton = document.getElementById('saveButton');
-    const fileContentArea = document.getElementById('textArea');
+    const fileContentArea = document.getElementById('fileContent'); // تصحيح هنا
 
     saveButton.addEventListener('click', () => {
       const textToSave = textArea.value;
@@ -38,8 +38,8 @@
     // تحميل محتوى الملف عند فتح الصفحة
     fetch('/file')
       .then(response => response.text())
-      .then(textArea => {
-        fileContentArea.value = textArea;
+      .then(textContent => { // تصحيح هنا
+        fileContentArea.value = textContent; // تصحيح هنا
       });
   </script>
 </body>

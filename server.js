@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path'); // استدعاء وحدة path
 const app = express();
 const port = 3000;
 
@@ -9,7 +10,10 @@ app.use(express.json());
 app.post('/save', (req, res) => {
   const textToSave = req.body.text;
 
-  fs.writeFile('/text.txt', textToSave, (err) => {
+  // استخدام path.join للحصول على المسار النسبي
+  const filePath = path.join(__dirname, 'text.txt');
+
+  fs.writeFile(filePath, textToSave, (err) => {
     if (err) {
       console.error(err);
       res.status(500).send('حدث خطأ أثناء الحفظ.');
@@ -21,7 +25,10 @@ app.post('/save', (req, res) => {
 
 // يقدم محتوى الملف عند الطلب
 app.get('/file', (req, res) => {
-  fs.readFile('/text.txt', 'utf8', (err, data) => {
+  // استخدام path.join للحصول على المسار النسبي
+  const filePath = path.join(__dirname, 'text.txt');
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
       res.status(500).send('حدث خطأ أثناء قراءة الملف.');
