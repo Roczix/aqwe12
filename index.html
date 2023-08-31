@@ -12,12 +12,11 @@
   <hr>
 
   <h2>محتوى الملف:</h2>
-  <textarea id="fileContent" rows="4" cols="50" readonly></textarea>
 
   <script>
     const textArea = document.getElementById('textArea');
     const saveButton = document.getElementById('saveButton');
-    const fileContentArea = document.getElementById('fileContent');
+    const fileContentArea = document.getElementById('textArea');
 
     saveButton.addEventListener('click', () => {
       const textToSave = textArea.value;
@@ -38,8 +37,8 @@
     // تحميل محتوى الملف عند فتح الصفحة
     fetch('/file')
       .then(response => response.text())
-      .then(fileContent => {
-        fileContentArea.value = fileContent;
+      .then(textArea => {
+        fileContentArea.value = textArea;
       });
   </script>
 </body>
