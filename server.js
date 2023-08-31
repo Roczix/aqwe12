@@ -1,25 +1,36 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const editor = document.getElementById("editor");
-    const saveButton = document.getElementById("saveButton");
+const express = require('express');
+const fs = require('fs');
+const app = express();
+const port = 3000;
 
-    // عند فتح الصفحة، قم بجلب محتويات ملف "text.txt" وعرضها في المربع نص
-    fetch("text.txt")
-        .then(response => response.text())
-        .then(text => editor.value = text)
-        .catch(error => console.error("حدث خطأ أثناء جلب محتويات الملف:", error));
+app.use(express.static('public'));
+app.use(express.json());
 
-    // عند النقر على زر "حفظ"
-    saveButton.addEventListener("click", function() {
-        const content = editor.value;
-        const blob = new Blob([content], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
+app.post('/save', (req, res) => {
+  const textToSave = req.body.text;
 
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "text.txt";
-        a.click();
+  fs.writeFile('text.txt', textToSave, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('حدث خطأ أثناء الحفظ.');
+    } else {
+      res.send('تم الحفظ بنجاح.');
+    }
+  });
+});
 
-        // إلغاء تخصيص URL بعد التنزيل
-        URL.revokeObjectURL(url);
-    });
+// يقدم محتوى الملف عند الطلب
+app.get('/file', (req, res) => {
+  fs.readFile('text.txt', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('حدث خطأ أثناء قراءة الملف.');
+    } else {
+      res.send(data);
+    }
+  });
+});
+
+app.listen(port, () => {
+  console.log(`الخادم يعمل على المنفذ ${port}`);
 });
